@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.8.0-devel-ubuntu22.04
+FROM nvcr.io/nvidia/tensorflow:21.08-tf2-py3
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -24,21 +24,21 @@ ENV LC_ALL en_US.UTF-8
 RUN add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update && \
     DEBIAN_FRONTEND=DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        python3.7 \
-        python3.7-dev \
-        python3.7-distutils \
+        python3.8 \
+        python3.8-dev \
+        python3.8-distutils \
         && \
     rm -rf /var/lib/apt/lists/* && \
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
-    python3.7 get-pip.py && \
-    ln -s /usr/bin/python3.7 /usr/local/bin/python3 && \
-    ln -s /usr/bin/python3.7 /usr/local/bin/python && \
+    python3.8 get-pip.py && \
+    ln -s /usr/bin/python3.8 /usr/local/bin/python3 && \
+    ln -s /usr/bin/python3.8 /usr/local/bin/python && \
     pip install --upgrade pip && \
     pip install --upgrade \
         "setuptools<66" \
         && \
     pip install --upgrade \
-        numpy \
+        numpy==1.19.5 \
         scipy \
         scikit-learn \
         matplotlib \
@@ -46,12 +46,11 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
         tqdm \
         Cython \
         jupyter \
-        jupyterlab
+        jupyterlab \
+        tensorflow-datasets
 
 RUN pip install --upgrade \
-        tensorflow \
-        tensorflow-datasets \
-        jax jaxlib==0.1.65 -f https://storage.googleapis.com/jax-releases/jax_releases.html \
+        "jax[cpu]" "jaxlib==0.1.65" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html \
         neural-tangents \
         flax \
         && \
