@@ -1,9 +1,9 @@
 from flax import linen as nn
 from functools import partial
 from jax import numpy as jnp
-from jax.tree_util import tree_flatten
 from typing import Any, Callable, Sequence, Tuple
-import numpy as np
+
+from data_diet.train_state import TrainState
 
 
 ########################################################################################################################
@@ -140,21 +140,8 @@ def get_model(args):
   return model
 
 
-def get_num_params(params):
-  return int(sum([np.prod(w.shape) for w in tree_flatten(params)[0]]))
+def apply_fn_test(train_state: TrainState, x):
+  vs = {**train_state.variables, 'params': train_state.params}
+  logits = train_state.apply_fn(vs, x, train=False, mutable=False)
+  return logits
 
-
-def get_apply_fn_test(model):
-  def apply_fn_test(params, model_state, x):
-    vs = {'params': params, **model_state}
-    logits = model.apply(vs, x, train=False, mutable=False)
-    return logits
-  return apply_fn_test
-
-
-def get_apply_fn_train(model):
-  def apply_fn_train(params, model_state, x):
-    vs = {'params': params, **model_state}
-    logits, model_state = model.apply(vs, x, mutable=list(model_state.keys()))
-    return logits, model_state
-  return apply_fn_train

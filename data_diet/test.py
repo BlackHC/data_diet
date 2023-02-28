@@ -1,10 +1,11 @@
 from .data import test_batches
 from .metrics import cross_entropy_loss, accuracy
+from .train_state import TrainState
 
 
 def get_test_step(f_test):
-  def test_step(state, x, y):
-    logits = f_test(state.optim.target, state.model, x)
+  def test_step(train_state: TrainState, x, y):
+    logits = f_test(train_state, x)
     loss = cross_entropy_loss(logits, y)
     acc = accuracy(logits, y)
     return loss, acc, logits

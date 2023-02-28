@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/tensorflow:21.08-tf2-py3
+FROM nvcr.io/nvidia/tensorflow:23.01-tf2-py3
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -38,7 +38,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
         "setuptools<66" \
         && \
     pip install --upgrade \
-        numpy==1.19.5 \
+        numpy\
         scipy \
         scikit-learn \
         matplotlib \
@@ -47,12 +47,17 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
         Cython \
         jupyter \
         jupyterlab \
-        tensorflow-datasets
+        tensorflow-datasets \
+    && \
+    apt-get clean && \
+    apt-get autoremove && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN pip install --upgrade \
-        "jax[cpu]" "jaxlib==0.1.65" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html \
+        "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html \
         neural-tangents \
         flax \
+        optax \
         && \
     apt-get clean && \
     apt-get autoremove && \

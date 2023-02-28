@@ -4,7 +4,7 @@ import os
 import shutil
 import tensorflow as tf
 from types import SimpleNamespace
-from .models import get_apply_fn_test, get_model
+from .models import apply_fn_test, get_model
 from .train_state import get_train_state
 
 
@@ -45,10 +45,11 @@ def make_dir(path):
 ########################################################################################################################
 
 def get_fn_params_state(args):
+  # NOTE: this is for evaluation only!
   model = get_model(args)
-  fn = get_apply_fn_test(model)
-  state, args = get_train_state(args, model)
-  params, state = state.optim.target, state.model
+  fn = apply_fn_test
+  state, args = get_train_state(args, model, 0)
+  params, state = state.params, state.variables
   return fn, params, state
 
 
