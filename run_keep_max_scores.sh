@@ -13,7 +13,7 @@ SUBSET_SIZE=$3
 EPOCH=$4
 STEP=$(( 390 * $EPOCH))
 
-CMDLINE="$TARGET . keep_max_$TYPE ./exps/baseline/$TYPE/ckpt_$STEP.npy $SUBSET_SIZE"
+CMDLINE="$TARGET . keep_max_${TYPE}_${EPOCH} ./exps/baseline/$TYPE/ckpt_$STEP.npy $SUBSET_SIZE"
 
 # Repeat for 0..($N_RUNS-1)
 for i in $(seq 0 $(($N_RUNS-1)))
