@@ -1,5 +1,6 @@
 import numpy as np
 import optax
+from flax import serialization
 from flax.training import train_state
 from jax._src.tree_util import tree_flatten
 from optax import sgd
@@ -42,7 +43,10 @@ def get_train_state(args, model, lr):
   train_state = create_train_state(args, model, lr)
   if args.load_dir:
     print(f'load from {args.load_dir}/ckpts/checkpoint_{args.ckpt}... ', end='')
-    train_state = checkpoints.restore_checkpoint(args.load_dir + '/ckpts', train_state, args.ckpt)
+    train_state_dict = checkpoints.restore_checkpoint(args.load_dir + '/ckpts', None, str(args.ckpt))
+    # NOTE(blackhc): I think I messed up the LR scheduler a bit, and it's also storing the LR scheduler's `count` state.
+    train_state_dict['opt_state']['1']['1'] = {}
+    train_state = serialization.from_state_dict(train_state, train_state_dict)
   args.num_params = get_num_params(train_state.params)
   print(f'{int(time.time() - time_start)}s')
   return train_state, args

@@ -10,12 +10,19 @@ N_RUNS = int(sys.argv[3])
 STEP = int(sys.argv[4])
 TYPE = sys.argv[5]
 
+# see get_score_fn in scores.py
 if TYPE == 'l2_error':
   path_name = 'error_l2_norm_scores'
 elif TYPE == 'grad_norm':
   path_name = 'grad_norm_scores'
-else:
+elif TYPE == 'input_variance':
+  path_name = 'input_variance_scores'
+elif TYPE == 'noised_input_variance':
+  path_name = 'noised_input_variance_scores'
+elif TYPE == 'forget':
   path_name = 'forget_scores'
+else:
+  raise ValueError(f'Invalid TYPE: {TYPE}')
 
 exp_dir = ROOT + f'/exps/{EXP}'
 scores = []

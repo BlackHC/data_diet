@@ -45,12 +45,11 @@ def make_dir(path):
 ########################################################################################################################
 
 def get_fn_params_state(args):
-  # NOTE: this is for evaluation only!
+  # NOTE: this is for analysis only!
   model = get_model(args)
   fn = apply_fn_test
   state, args = get_train_state(args, model, 0)
-  params, state = state.params, state.variables
-  return fn, params, state
+  return fn, state
 
 
 ########################################################################################################################

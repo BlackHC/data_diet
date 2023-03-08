@@ -20,10 +20,20 @@ args.load_dir = run_dir
 args.ckpt = STEP
 
 _, X, Y, _, _, args = load_data(args)
-fn, params, state = get_fn_params_state(args)
-scores = compute_scores(fn, params, state, X, Y, BATCH_SZ, TYPE)
+fn, state = get_fn_params_state(args)
+scores = compute_scores(fn, state, X, Y, BATCH_SZ, TYPE)
 
-path_name = 'error_l2_norm_scores' if TYPE == 'l2_error' else 'grad_norm_scores'
+# types: l2_error, grad_norm_scores and input_variance
+if TYPE == 'l2_error':
+    path_name = 'error_l2_norm_scores'
+elif TYPE == 'grad_norm':
+    path_name = 'grad_norm_scores'
+elif TYPE == 'input_variance':
+    path_name = 'input_variance_scores'
+elif TYPE == 'noised_input_variance':
+    path_name = 'noised_input_variance_scores'
+else:
+    raise ValueError(f'Invalid TYPE: {TYPE}')
 
 save_dir = run_dir + f'/{path_name}'
 save_path = run_dir + f'/{path_name}/ckpt_{STEP}.npy'

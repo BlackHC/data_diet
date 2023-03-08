@@ -30,7 +30,10 @@ def one_hot(labels, num_classes, dtype=np.float32):
 
 def normalize_cifar10_images(X):
   mean_rgb = np.array([[[[0.4914 * 255, 0.4822 * 255, 0.4465 * 255]]]], dtype=np.float32)
+  # CIFAR100
   std_rgb = np.array([[[[0.2470 * 255, 0.2435 * 255, 0.2616 * 255]]]], dtype=np.float32)
+  # CIFAR10
+  #std_rgb = np.array([[[[0.2023 * 255, 0.1994 * 255, 0.2010 * 255]]]], dtype=np.float32)
   X = (X.astype(np.float32) - mean_rgb) / std_rgb
   return X
 
