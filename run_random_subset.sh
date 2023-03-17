@@ -16,6 +16,3 @@ wait
 
 wait
 
-/usr/bin/python3 /data_diet/scripts/run_random_subset.py . baseline $1 4 &
-/usr/bin/python3 /data_diet/scripts/run_random_subset.py . baseline $1 5 &
-
